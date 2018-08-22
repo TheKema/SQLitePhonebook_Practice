@@ -1,4 +1,4 @@
-package ainullov.kamil.com.sqlitephonebookapplication;
+package ainullov.kamil.com.sqlitephonebookapplication.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

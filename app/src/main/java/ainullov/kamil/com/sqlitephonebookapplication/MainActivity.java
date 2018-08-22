@@ -15,12 +15,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ainullov.kamil.com.sqlitephonebookapplication.db.DataBaseHelper;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     final static int REQUEST_CODE_ADD = 1;
-    String name;
-    String phoneNumber;
-    String desc;
+    private String name;
+    private String phoneNumber;
+    private String desc;
 
     List<Person> people = new ArrayList<>();
     RecyclerView recyclerView;
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cv.put("number", phoneNumber);
         cv.put("description", desc);
 
+
+
         // вставляем запись и получаем ее ID
         long rowID = db.insert("mytable", null, cv);
         // Чтение, делаем запрос всех данных из таблицы mytable, получаем Cursor
@@ -96,18 +100,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-//        // ставим позицию курсора на первую строку выборки
-//        // если в выборке нет строк, вернется false
 //        if (c.moveToFirst()) {
 //            int idColIndex = c.getColumnIndex("id");
 //            int nameColIndex = c.getColumnIndex("name");
 //            int phoneNumberColIndex = c.getColumnIndex("number");
 //            int descColIndex = c.getColumnIndex("description");
 //            do {
-//                if (!c.getString(nameColIndex).isEmpty())// получаем значения по номерам столбцов
+//                if (!c.getString(nameColIndex).isEmpty())
+//                    значения по номерам столбцов
 //                    people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex)));
-//                // переход на следующую строку
-//                // а если следующей нет (текущая - последняя), то false - выходим из цикла
 //            } while (c.moveToNext());
 //        }
 
@@ -115,4 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbHelper.close();
         adapter.notifyDataSetChanged();
     }
+
+
 }

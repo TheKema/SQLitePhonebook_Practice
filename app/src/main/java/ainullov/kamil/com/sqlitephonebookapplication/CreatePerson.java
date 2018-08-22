@@ -9,23 +9,23 @@ import android.widget.EditText;
 
 public class CreatePerson extends AppCompatActivity implements View.OnClickListener {
 
-    EditText etName;
-    EditText etNumber;
-    EditText etDesc;
-    Button btnSave;
-    Button btnBack;
+    private EditText etName;
+    private EditText etNumber;
+    private EditText etDesc;
+    private Button btnSave;
+    private Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_person);
 
-        etName = (EditText) findViewById(R.id.etName);
-        etNumber = (EditText) findViewById(R.id.etNumber);
-        etDesc = (EditText) findViewById(R.id.etDesc);
+        etName = (EditText) findViewById(R.id.etNameDialog);
+        etNumber = (EditText) findViewById(R.id.etNumberDialog);
+        etDesc = (EditText) findViewById(R.id.etDescDialog);
 
-        btnSave = (Button) findViewById(R.id.btnSave);
-        btnBack = (Button) findViewById(R.id.btnBack);
+        btnSave = (Button) findViewById(R.id.btnSaveDialog);
+        btnBack = (Button) findViewById(R.id.btnDeleteDialog);
         btnSave.setOnClickListener(this);
         btnBack.setOnClickListener(this);
     }
@@ -33,7 +33,7 @@ public class CreatePerson extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnSave:
+            case R.id.btnSaveDialog:
                 Intent intent = new Intent();
                 String name = etName.getText().toString();
                 String phoneNumber = etNumber.getText().toString();
@@ -44,7 +44,7 @@ public class CreatePerson extends AppCompatActivity implements View.OnClickListe
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
-            case R.id.btnBack:
+            case R.id.btnDeleteDialog:
                 finish();
                 break;
         }
