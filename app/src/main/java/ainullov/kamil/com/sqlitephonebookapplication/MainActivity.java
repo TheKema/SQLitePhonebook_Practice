@@ -19,6 +19,7 @@ import ainullov.kamil.com.sqlitephonebookapplication.db.DataBaseHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     final static int REQUEST_CODE_ADD = 1;
     private String name;
     private String phoneNumber;
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // объект для создания и управления версиями БД
         dbHelper = new DataBaseHelper(this);
 
         btnAdd = (Button) findViewById(R.id.btnAdd);
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DataAdapter(this, people);
         recyclerView.setAdapter(adapter);
+
+        load();
     }
 
     @Override
@@ -82,12 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cv.put("name", name);
         cv.put("number", phoneNumber);
         cv.put("description", desc);
-
-
-
-        // вставляем запись и получаем ее ID
+        // вставляем запись
         long rowID = db.insert("mytable", null, cv);
-        // Чтение, делаем запрос всех данных из таблицы mytable, получаем Cursor
+        // Чтение, делаем запрос всех данных из таблицы, получаем Cursor
         Cursor c = db.query("mytable", null, null, null, null, null, null);
 
         if (c.moveToLast()) {
@@ -96,24 +95,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int phoneNumberColIndex = c.getColumnIndex("number");
             int descColIndex = c.getColumnIndex("description");
             if (!c.getString(nameColIndex).isEmpty())// получаем значения по номерам столбцов
-                people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex)));
+                people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex), c.getInt(idColIndex)));
 
         }
 
-//        if (c.moveToFirst()) {
-//            int idColIndex = c.getColumnIndex("id");
-//            int nameColIndex = c.getColumnIndex("name");
-//            int phoneNumberColIndex = c.getColumnIndex("number");
-//            int descColIndex = c.getColumnIndex("description");
-//            do {
-//                if (!c.getString(nameColIndex).isEmpty())
-//                    значения по номерам столбцов
-//                    people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex)));
-//            } while (c.moveToNext());
-//        }
-
         c.close();
         dbHelper.close();
+        adapter.notifyDataSetChanged();
+    }
+
+
+    public void load() {
+        DataBaseHelper dbHelperLoad = new DataBaseHelper(this);
+        SQLiteDatabase dbLoad = dbHelperLoad.getWritableDatabase();
+        Cursor cLoad = dbLoad.query("mytable", null, null, null, null, null, null);
+
+        if (cLoad.moveToFirst()) {
+            int idColIndex = cLoad.getColumnIndex("id");
+            int nameColIndex = cLoad.getColumnIndex("name");
+            int phoneNumberColIndex = cLoad.getColumnIndex("number");
+            int descColIndex = cLoad.getColumnIndex("description");
+            do {
+                if (!cLoad.getString(nameColIndex).isEmpty())
+//                    значения по номерам столбцов
+                    people.add(new Person(cLoad.getString(nameColIndex), cLoad.getString(phoneNumberColIndex), cLoad.getString(descColIndex), cLoad.getInt(idColIndex)));
+            } while (cLoad.moveToNext());
+        }
+
+        cLoad.close();
+        dbHelperLoad.close();
         adapter.notifyDataSetChanged();
     }
 

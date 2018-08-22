@@ -27,7 +27,6 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private List<Person> people;
 
     private DataAdapter adapter = this;
-
     private Context mContext;
 
     DataAdapter(Context context, List<Person> people) {
@@ -109,8 +108,9 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                     public void onClick(View v) {
                         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        int delCount = db.delete("mytable", "id = " + position, null);
+                        int delCount = db.delete("mytable", "id = " + people.get(position).getId(), null);
                         people.remove(position);
+                        dbHelper.close();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -122,11 +122,12 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         String strNameDialog = etNameDialog.getText().toString();
                         String strNumberDialog = etNumberDialog.getText().toString();
                         String strDescDialog = etDescDialog.getText().toString();
-                        String id = position + ""; // Заменяем по id дебильно сделал
+                        String id = String.valueOf(people.get(position).getId());
 
                         people.get(position).setName(strNameDialog);
                         people.get(position).setPhoneNumber(strNumberDialog);
                         people.get(position).setDesc(strDescDialog);
+                        people.get(position).setId(Integer.valueOf(id));
 
                         ContentValues cv = new ContentValues();
                         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
@@ -135,14 +136,15 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         cv.put("name", strNameDialog);
                         cv.put("number", strNumberDialog);
                         cv.put("description", strDescDialog);
+                        cv.put("id", people.get(position).getId());
                         //Обновляем
-                        int updCount = db.update("mytable", cv, "id = ?",
-                                new String[] { id });
+                        int updCount = db.update("mytable", cv, "id = ?", new String[]{id});
+                        dbHelper.close();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
+
                     }
                 });
-
 
                 dialog.show();
 
