@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     insertAndRead();
                     break;
             }
-        } else {
-            Toast.makeText(this, "Wrong result", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -99,8 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int descColIndex = c.getColumnIndex("description");
             int emailColIndex = c.getColumnIndex("email");
             if (!c.getString(nameColIndex).isEmpty())// получаем значения по номерам столбцов
-                people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex), c.getInt(idColIndex), c.getString(emailColIndex)));
-
+                people.add(new Person(c.getString(nameColIndex),
+                        c.getString(phoneNumberColIndex),
+                        c.getString(descColIndex),
+                        c.getInt(idColIndex),
+                        c.getString(emailColIndex)));
         }
 
         c.close();
@@ -123,7 +124,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             do {
                 if (!cLoad.getString(nameColIndex).isEmpty())
 //                    значения по номерам столбцов
-                    people.add(new Person(cLoad.getString(nameColIndex), cLoad.getString(phoneNumberColIndex), cLoad.getString(descColIndex), cLoad.getInt(idColIndex),cLoad.getString(emailColIndex)));
+                    people.add(new Person(cLoad.getString(nameColIndex),
+                            cLoad.getString(phoneNumberColIndex),
+                            cLoad.getString(descColIndex),
+                            cLoad.getInt(idColIndex),
+                            cLoad.getString(emailColIndex)));
             } while (cLoad.moveToNext());
         }
 
