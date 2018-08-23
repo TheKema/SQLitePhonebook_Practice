@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -47,7 +48,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         final Person person = people.get(position);
         holder.nameView.setText(person.getName());
         holder.phoneNumber.setText(person.getPhoneNumber());
-        holder.tvDescription.setText(person.getDesc());
+//        holder.tvDescription.setText(person.getDesc());
 
 
         holder.llAdapter.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -79,7 +80,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
                 final Dialog dialog = new Dialog(mContext);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Settings");
+                dialog.setTitle("Contact");
 
                 final EditText etNameDialog = (EditText) dialog.findViewById(R.id.etNameDialog);
                 etNameDialog.setText(people.get(position).getName());
@@ -87,6 +88,8 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                 etNumberDialog.setText(people.get(position).getPhoneNumber());
                 final EditText etDescDialog = (EditText) dialog.findViewById(R.id.etDescDialog);
                 etDescDialog.setText(people.get(position).getDesc());
+                final EditText etMailDialog = (EditText) dialog.findViewById(R.id.etMailDialog);
+                etMailDialog.setText(people.get(position).getEmail());
 
                 Button btnCallDialog = (Button) dialog.findViewById(R.id.btnCallDialog);
                 Button btnDeleteDialog = (Button) dialog.findViewById(R.id.btnDeleteDialog);
@@ -123,11 +126,13 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         String strNumberDialog = etNumberDialog.getText().toString();
                         String strDescDialog = etDescDialog.getText().toString();
                         String id = String.valueOf(people.get(position).getId());
+                        String strEmail = String.valueOf(people.get(position).getEmail());
 
                         people.get(position).setName(strNameDialog);
                         people.get(position).setPhoneNumber(strNumberDialog);
                         people.get(position).setDesc(strDescDialog);
                         people.get(position).setId(Integer.valueOf(id));
+                        people.get(position).setEmail(strEmail);
 
                         ContentValues cv = new ContentValues();
                         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
@@ -137,6 +142,7 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
                         cv.put("number", strNumberDialog);
                         cv.put("description", strDescDialog);
                         cv.put("id", people.get(position).getId());
+                        cv.put("email", people.get(position).getEmail());
                         //Обновляем
                         int updCount = db.update("mytable", cv, "id = ?", new String[]{id});
                         dbHelper.close();
@@ -158,15 +164,14 @@ class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView nameView, phoneNumber, tvDescription;
-        final ConstraintLayout llAdapter;
+        final TextView nameView, phoneNumber;
+        final LinearLayout llAdapter;
 
         ViewHolder(View view) {
             super(view);
-            tvDescription = (TextView) view.findViewById(R.id.tvDescription);
             nameView = (TextView) view.findViewById(R.id.name);
             phoneNumber = (TextView) view.findViewById(R.id.phoneNumber);
-            llAdapter = (ConstraintLayout) view.findViewById(R.id.llAdapter);
+            llAdapter = (LinearLayout) view.findViewById(R.id.llAdapter);
         }
     }
 

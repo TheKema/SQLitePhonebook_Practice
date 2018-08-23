@@ -15,7 +15,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + "id integer primary key autoincrement,"
                 + "name text,"
                 + "number text,"
-                + "description text" + ");");
+                + "description text,"
+                + "email text" + ");");
     }
 
     @Override

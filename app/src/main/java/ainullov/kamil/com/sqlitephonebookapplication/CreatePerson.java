@@ -12,6 +12,7 @@ public class CreatePerson extends AppCompatActivity implements View.OnClickListe
     private EditText etName;
     private EditText etNumber;
     private EditText etDesc;
+    private EditText etEmail;
     private Button btnSave;
     private Button btnBack;
 
@@ -23,6 +24,7 @@ public class CreatePerson extends AppCompatActivity implements View.OnClickListe
         etName = (EditText) findViewById(R.id.etNameDialog);
         etNumber = (EditText) findViewById(R.id.etNumberDialog);
         etDesc = (EditText) findViewById(R.id.etDescDialog);
+        etEmail = (EditText) findViewById(R.id.etMailDialog);
 
         btnSave = (Button) findViewById(R.id.btnSaveDialog);
         btnBack = (Button) findViewById(R.id.btnDeleteDialog);
@@ -38,9 +40,11 @@ public class CreatePerson extends AppCompatActivity implements View.OnClickListe
                 String name = etName.getText().toString();
                 String phoneNumber = etNumber.getText().toString();
                 String desc = etDesc.getText().toString();
+                String email = etEmail.getText().toString();
                 intent.putExtra("name", name);
                 intent.putExtra("phoneNumber", phoneNumber);
                 intent.putExtra("desc", desc);
+                intent.putExtra("email", email);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;

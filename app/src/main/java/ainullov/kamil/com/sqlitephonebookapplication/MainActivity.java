@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String name;
     private String phoneNumber;
     private String desc;
+    private String email;
 
     List<Person> people = new ArrayList<>();
     RecyclerView recyclerView;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     name = data.getStringExtra("name");
                     phoneNumber = data.getStringExtra("phoneNumber");
                     desc = data.getStringExtra("desc");
+                    email = data.getStringExtra("email");
                     insertAndRead();
                     break;
             }
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cv.put("name", name);
         cv.put("number", phoneNumber);
         cv.put("description", desc);
+        cv.put("email", email);
         // вставляем запись
         long rowID = db.insert("mytable", null, cv);
         // Чтение, делаем запрос всех данных из таблицы, получаем Cursor
@@ -94,8 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int nameColIndex = c.getColumnIndex("name");
             int phoneNumberColIndex = c.getColumnIndex("number");
             int descColIndex = c.getColumnIndex("description");
+            int emailColIndex = c.getColumnIndex("email");
             if (!c.getString(nameColIndex).isEmpty())// получаем значения по номерам столбцов
-                people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex), c.getInt(idColIndex)));
+                people.add(new Person(c.getString(nameColIndex), c.getString(phoneNumberColIndex), c.getString(descColIndex), c.getInt(idColIndex), c.getString(emailColIndex)));
 
         }
 
@@ -115,10 +119,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int nameColIndex = cLoad.getColumnIndex("name");
             int phoneNumberColIndex = cLoad.getColumnIndex("number");
             int descColIndex = cLoad.getColumnIndex("description");
+            int emailColIndex = cLoad.getColumnIndex("email");
             do {
                 if (!cLoad.getString(nameColIndex).isEmpty())
 //                    значения по номерам столбцов
-                    people.add(new Person(cLoad.getString(nameColIndex), cLoad.getString(phoneNumberColIndex), cLoad.getString(descColIndex), cLoad.getInt(idColIndex)));
+                    people.add(new Person(cLoad.getString(nameColIndex), cLoad.getString(phoneNumberColIndex), cLoad.getString(descColIndex), cLoad.getInt(idColIndex),cLoad.getString(emailColIndex)));
             } while (cLoad.moveToNext());
         }
 
